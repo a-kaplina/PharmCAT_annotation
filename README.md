@@ -7,7 +7,6 @@ Repository with script for merge, liftover and annotation with PharmCAT tool
 - из объединённого vcf удаляются позиции, перечисленные в файле stop_list.tsv, результат сохраняется как merged_excl_stop.vcf; <br>
 - отфильтрованный файл снова нормализуется с привязкой к референсному геному hg19 (~/reference/hg19/hg19.fa) и сохраняется, как merged_excl_stop_normalized.vcf.gz; <br>
 - с помощью утилиты Picard LiftoverVcf выполняется конвертация координат вариантов из hg19 в hg38, используется hg19ToHg38.over.chain.gz. Варианты, которые не удалось конвертировать, сохраняются в отдельный файл rejected_liftover38.vcf.gz; <br>
-<br>
 - предобработка для PharmCAT с помощью pharmcat_vcf_preprocessor - в отдельный vcf  файл сохраняются варианты, присутствующие в базе данных PharmCAT. Предобработка проводится в двух режимах: <br>
   1) с флагом -ss (single sample) — результат сохраняется в виде отдельных vcf файлов по образцам в папку output/pharmcat_preprocessed_vcfs, имена файлов соответствуют образцам (это делается для будущей генерации JSON отчетов по образцам); <br>
   2) также проводится предобработка без разделения по образцам — все варианты сохраняются в один общий VCF  файл в папку output/pharmcat_preprocessed_all (это делается для подсчета общего числа вариантов, обнаруженных в базе PharmCAT); <br>
@@ -16,20 +15,24 @@ Repository with script for merge, liftover and annotation with PharmCAT tool
   1) промежуточный отчет *.match.json - содержит список диплотипов, которые были найдены в VCF-файле для каждого фармакогена; <br>
   2) отчет с результатами фенотпирования (прогнозирование фенотипа) *.phenotype.json  - берет диплотипы из .match.json и присваивает им  фенотипы; <br>
   3) итоговый отчет *.report.json - берет фенотипы из .phenotype.json и сопоставляет их с базами данных клинических рекомендаций (CPIC, DPWG), содержит не только диплотипы и фенотипы, но и рекомендации по выбору препарата. <br>
-- парсинг JSON в TSV. В папке с JSON-отчётами (output/pharmcat_json_reports) запускается Python-скрипт json_to_tsv_2.py. Скрипт извлекает из JSON-файлов данные по генам: диплотип, фенотип, функциональный статус, activity score. Результаты сохраняются в подпапке output/pharmcat_json_reports/tsv_output в двух форматах: all_genes_combined.tsv — все записи подряд, samples_by_gene_pivot.tsv — сводная таблица в "широком" формате (одна строка на образец, колонки для каждого гена)
+- парсинг JSON в TSV. В папке с JSON-отчётами (output/pharmcat_json_reports) запускается Python-скрипт json_to_tsv_2.py. Скрипт извлекает из JSON-файлов данные по генам: диплотип, фенотип, функциональный статус, activity score. <br>
+- результаты сохраняются в подпапке output/pharmcat_json_reports/tsv_output в двух форматах: all_genes_combined.tsv — все записи подряд, samples_by_gene_pivot.tsv — сводная таблица в "широком" формате (одна строка на образец, колонки для каждого гена)
 
 <img width="1281" height="440" alt="image" src="https://github.com/user-attachments/assets/08b6d752-007c-41d9-bc49-920a3fab1ee2" />
 
 <img width="1118" height="415" alt="image" src="https://github.com/user-attachments/assets/800f30e5-fd3d-4690-a676-d43c86ded575" />
 
-Все ключевые шаги, а также подсчет количества вариантов в vcf файлах на кждом этапе записываются в pipeline.log. Для каждого образца сохраняется статистика нормализации в normalization_stats.tsv. 
-
+<br>
+<br>
+Все ключевые шаги, а также подсчет количества вариантов в vcf файлах на кждом этапе записываются в pipeline.log. Для каждого образца сохраняется статистика нормализации в normalization_stats.tsv
+<br>
+<br>
 
 **Программы, которые используются при выполнении скрипта: <br>**
 - bcftools 1.20
-- VCFtools (0.1.17)
+- Picard
 - PharmCAT 3.2.0
-- Python 3.10.10 (библиотеки json, glob, csv, os, sys, collections) <br>
+- Python > 3.10.10 (библиотеки json, glob, csv, os, sys, collections) <br>
 
 **Запуск скрипта:** bash pharm3.sh  ~/absolute/path (абсолютный путь к папке с vcf файлами, которые нужно обработать) <br>
  <br>
@@ -44,10 +47,15 @@ Repository with script for merge, liftover and annotation with PharmCAT tool
 
 
 **После выполнения скрипта в папке output (будет создана в папке с образцами) будут находиться:** <br>
-- объединенный файл со всеми образцами с индексацией (файл без фильтрации, исходный после объединения) - merged.vcf.gz и merged.vcf.gz.csi
-- файл, который использовался для LD-pruning и PCA после фильтрации и удаления родственного образца - filtered_no_nx1575.vcf.gz
-- файлы после LD-pruning - pruned.prune.in, pruned.prune.out, pruned.log
-- файлы для PCA - pruned.bed, pruned.bim, pruned.fam, pruned.nosex
-- файлы после PCA - pruned.eigenval, pruned.eigenvec
+- объединенный файл со всеми образцами с индексацией (файл без фильтрации, исходный после объединения) - merged.vcf.gz
+- объединенный файл после исключения вариантов из стоп-листа - merged_excl_stop.vcf.gz
+- нормадизованный merged_excl_stop.vcf.gz - merged_excl_stop_normalized.vcf.gz и его индекс merged_excl_stop.vcf.gz.csi
+- файл после liftover с hg19 до hg 38: lift38_merged_excl_stop_normalized.vcf.gz и его индекс lift38_merged_excl_stop_normalized.vcf.gz.tbi
+- файл с вариантами, которые не удалось конвертировать (были отклонены при liftover) - lift38_rejected.vcf.gz
+- лог файл pipeline.log
 - таблица с данными при нормализации vcf файлов (Sample, Total, Split, Joined, Realigned,	Skipped) -  normalization_stats.tsv
-- обновленная таблица с ID новых образцов (группа - new) - jews_and_new_groups.csv
+- папка pharmcat_preprocessed_vcfs с отдельными подготовленными vcf файлами по образцам (получены при помощи pharmcat_vcf_preprocessor, содержат варианты, обнаруженные в базе PharmCAT)
+- папка pharmcat_preprocessed_all с общим vcf файлом со всеми образцами (содержит варианты, обнаруженные в базе PharmCAT)
+- папка с JSON-отчетами PharmCAT - pharmcat_json_reports
+
+**Результат (таблицы all_genes_combined.tsv и samples_by_gene_pivot.tsv) содержится в папке output/pharmcat_json_reports/tsv_output**
