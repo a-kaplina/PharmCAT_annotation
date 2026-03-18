@@ -36,7 +36,7 @@ Repository with script for merge, liftover and annotation with PharmCAT tool
 
 **Запуск скрипта:** bash pharm3.sh  ~/absolute/path (абсолютный путь к папке с vcf файлами, которые нужно обработать) <br>
  <br>
-В папке находятся: <br>
+**В папке, в которой запускается скрипт,  находятся:** <br>
 - vcf файлы, которые нужно обработать <br>
 - общий vcf файл по популяциям (vcf_jews_bgz.vcf.gz)  <br>
 - таблица с вариантыми из стоп-листа, которые нужно исключить (stop_list.tsv) <br>
