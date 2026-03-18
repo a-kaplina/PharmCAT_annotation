@@ -1,2 +1,51 @@
 # PharmCAT_annotation
 Repository with script for merge, liftover and annotation with PharmCAT tool
+
+Скрипт для объединения vcf.gz файлов с общим vcf.gz файлом с образцами по еврейским популяцисм, нормализации и liftover  до hg38, поиска вариантов из базы PharmCAT, аннотации гаплотипов фармакогенов (и опредления фенотипов согласно гаплотипам) при помощи PharmCAT (Pharmacogenomics Clinical Annotation Tool). Полученные файлы сохраняются в папку output (создается внутри папки с vcf.gz файлами) <br>
+<br>
+- скрипт нормализует (данные по нормализации сохраняет в normalization_stats.tsv), индексирует и объединяет отдельные vcf.gz файлы с общим vcf.gz файлом по еврейским популяциям (vcf_jews_bgz.vcf.gz);  <br>
+- из объединённого vcf удаляются позиции, перечисленные в файле stop_list.tsv, результат сохраняется как merged_excl_stop.vcf; <br>
+- отфильтрованный файл снова нормализуется с привязкой к референсному геному hg19 (~/reference/hg19/hg19.fa) и сохраняется, как merged_excl_stop_normalized.vcf.gz; <br>
+- с помощью утилиты Picard LiftoverVcf выполняется конвертация координат вариантов из hg19 в hg38, используется hg19ToHg38.over.chain.gz. Варианты, которые не удалось конвертировать, сохраняются в отдельный файл rejected_liftover38.vcf.gz; <br>
+<br>
+- предобработка для PharmCAT с помощью pharmcat_vcf_preprocessor - в отдельный vcf  файл сохраняются варианты, присутствующие в базе данных PharmCAT. Предобработка проводится в двух режимах: <br>
+  ---1) с флагом -ss (single sample) — результат сохраняется в виде отдельных vcf файлов по образцам в папку output/pharmcat_preprocessed_vcfs, имена файлов соответствуют образцам (это делается для будущей генерации JSON отчетов по образцам); <br>
+  ---2) также проводится предобработка без разделения по образцам — все варианты сохраняются в один общий VCF  файл в папку output/pharmcat_preprocessed_all (это делается для подсчета общего числа вариантов, обнаруженных в базе PharmCAT); <br>
+  <br>
+- генерация JSON-отчётов PharmCAT. Для каждого предобработанного VCF-файла запускается pharmcat.jar для генерации отчетов (сохраняются в папку output/pharmcat_json_reports): <br>
+--- промежуточный отчет *.match.json - содержит список диплотипов, которые были найдены в VCF-файле для каждого фармакогена; <br>
+--- отчет с результатами фенотпирования (прогнозирование фенотипа) *.phenotype.json  - берет диплотипы из .match.json и присваивает им  фенотипы; <br>
+--- итоговый отчет *.report.json - берет фенотипы из .phenotype.json и сопоставляет их с базами данных клинических рекомендаций (CPIC, DPWG), содержит не только диплотипы и фенотипы, но и рекомендации по выбору препарата. <br>
+- парсинг JSON в TSV. В папке с JSON-отчётами (output/pharmcat_json_reports) запускается Python-скрипт json_to_tsv_2.py. Скрипт извлекает из JSON-файлов данные по генам: диплотип, фенотип, функциональный статус, activity score. Результаты сохраняются в подпапке output/pharmcat_json_reports/tsv_output в двух форматах: all_genes_combined.tsv — все записи подряд, samples_by_gene_pivot.tsv — сводная таблица в "широком" формате (одна строка на образец, колонки для каждого гена).
+- <img width="1281" height="440" alt="image" src="https://github.com/user-attachments/assets/08b6d752-007c-41d9-bc49-920a3fab1ee2" />
+
+- <img width="1118" height="415" alt="image" src="https://github.com/user-attachments/assets/800f30e5-fd3d-4690-a676-d43c86ded575" />
+
+Все ключевые шаги, а также подсчет количества вариантов в vcf файлах на кждом этапе записываются в pipeline.log. Для каждого образца сохраняется статистика нормализации в normalization_stats.tsv. 
+
+После предобработки подсчитывается число вариантов в полученных файлах (логируется).
+- 
+
+
+**Программы, которые используются при выполнении скрипта: <br>**
+- bcftools 1.20
+- VCFtools (0.1.17)
+- PLINK v1.9.0-b.7.7 64-bit (22 Oct 2024)            cog-genomics.org/plink/1.9/
+- Python 3.10.10 (библиотеки pandas, numpy, matplotlib, seaborn, scipy) <br>
+
+**Запуск скрипта:** merge_script_jews.sh ~/absolute/path (абсолютный путь к папке с vcf файлами, которые нужно объединить) <br>
+ <br>
+В папке находятся: <br>
+- vcf файлы, которые нужно объединить <br>
+- общий vcf файл по популяциям (vcf_jews_bgz.vcf.gz)  <br>
+- таблица (jews_and_new_groups.csv) с обозначениями ID и групп еврейских популяций из общего файла vcf_jews_bgz.vcf.gz  <br>
+<img width="639" height="412" alt="image" src="https://github.com/user-attachments/assets/5c0d87b3-b0dd-4fd0-85d5-613f55adfa1c" />
+
+**После выполнения скрипта в папке output (будет создана в папке с образцами) будут находиться файлы:** <br>
+- объединенный файл со всеми образцами с индексацией (файл без фильтрации, исходный после объединения) - merged.vcf.gz и merged.vcf.gz.csi
+- файл, который использовался для LD-pruning и PCA после фильтрации и удаления родственного образца - filtered_no_nx1575.vcf.gz
+- файлы после LD-pruning - pruned.prune.in, pruned.prune.out, pruned.log
+- файлы для PCA - pruned.bed, pruned.bim, pruned.fam, pruned.nosex
+- файлы после PCA - pruned.eigenval, pruned.eigenvec
+- таблица с данными при нормализации vcf файлов (Sample, Total, Split, Joined, Realigned,	Skipped) -  normalization_stats.tsv
+- обновленная таблица с ID новых образцов (группа - new) - jews_and_new_groups.csv
