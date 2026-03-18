@@ -58,4 +58,7 @@ Repository with script for merge, liftover and annotation with PharmCAT tool
 - папка pharmcat_preprocessed_all с общим vcf файлом со всеми образцами (содержит варианты, обнаруженные в базе PharmCAT)
 - папка с JSON-отчетами PharmCAT - pharmcat_json_reports
 
+  <img width="704" height="503" alt="image" src="https://github.com/user-attachments/assets/66fa645d-487f-41bd-bf2a-f65ed847cd8e" />
+
+
 **Результат (таблицы all_genes_combined.tsv и samples_by_gene_pivot.tsv) содержится в папке output/pharmcat_json_reports/tsv_output**
