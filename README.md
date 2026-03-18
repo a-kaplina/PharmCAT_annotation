@@ -29,10 +29,40 @@ Repository with script for merge, liftover and annotation with PharmCAT tool
 <br>
 
 **Программы, которые используются при выполнении скрипта: <br>**
+- Java 17 или новее
 - bcftools 1.20
+- htslib >= v1.18
 - Picard
 - PharmCAT 3.2.0
-- Python > 3.10.10 (библиотеки json, glob, csv, os, sys, collections) <br>
+- Python  3.10.14 или новее (библиотеки json, glob, csv, os, sys, collections) <br>
+
+**В скрипте доступ к референсным последовательностям и chain, необходимыем для нормализации и liftover, проводится таким образом:**
+```bash
+~/reference/hg19/hg19.fa
+~/reference/hg38/hg38.fa
+~/reference/hg38/hg19ToHg38.over.chain.gz
+```
+**Референсные файлы должны быть индексированы:**
+- hg19.fa, hg19.fa.fai, hg19.dict
+- hg38.fa, hg38.fa.fai, hg38.dict
+
+**Picard в скрипте запускается таким образом:**
+```bash
+java -jar ~/picard/build/libs/picard.jar LiftoverVcf \
+    I="$NORMALIZED" \
+    O="$LIFT_OVERED38" \
+    CHAIN=~/reference/hg38/hg19ToHg38.over.chain.gz \
+    REJECT="$REJECTED_LIFTOVER38" \
+    R=~/reference/hg38/hg38.fa 2>> "$LOG_FILE"
+```
+
+**PharmCAT необходимо предварительно установить при помощи (https://pharmcat.clinpgx.org/using/Setup-PharmCAT/): <br>**
+```bash
+curl -fsSL https://get.pharmcat.org | bash
+```
+```python
+pip3 install -r requirements.txt
+```
 
 **Запуск скрипта:** bash pharm3.sh  ~/absolute/path (абсолютный путь к папке с vcf файлами, которые нужно обработать) <br>
  <br>
