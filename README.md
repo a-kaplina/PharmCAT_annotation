@@ -16,10 +16,11 @@ Repository with script for merge, liftover and annotation with PharmCAT tool
   1) промежуточный отчет *.match.json - содержит список диплотипов, которые были найдены в VCF-файле для каждого фармакогена; <br>
   2) отчет с результатами фенотпирования (прогнозирование фенотипа) *.phenotype.json  - берет диплотипы из .match.json и присваивает им  фенотипы; <br>
   3) итоговый отчет *.report.json - берет фенотипы из .phenotype.json и сопоставляет их с базами данных клинических рекомендаций (CPIC, DPWG), содержит не только диплотипы и фенотипы, но и рекомендации по выбору препарата. <br>
-- парсинг JSON в TSV. В папке с JSON-отчётами (output/pharmcat_json_reports) запускается Python-скрипт json_to_tsv_2.py. Скрипт извлекает из JSON-файлов данные по генам: диплотип, фенотип, функциональный статус, activity score. Результаты сохраняются в подпапке output/pharmcat_json_reports/tsv_output в двух форматах: all_genes_combined.tsv — все записи подряд, samples_by_gene_pivot.tsv — сводная таблица в "широком" формате (одна строка на образец, колонки для каждого гена).
-- <img width="1281" height="440" alt="image" src="https://github.com/user-attachments/assets/08b6d752-007c-41d9-bc49-920a3fab1ee2" />
+- парсинг JSON в TSV. В папке с JSON-отчётами (output/pharmcat_json_reports) запускается Python-скрипт json_to_tsv_2.py. Скрипт извлекает из JSON-файлов данные по генам: диплотип, фенотип, функциональный статус, activity score. Результаты сохраняются в подпапке output/pharmcat_json_reports/tsv_output в двух форматах: all_genes_combined.tsv — все записи подряд, samples_by_gene_pivot.tsv — сводная таблица в "широком" формате (одна строка на образец, колонки для каждого гена)
 
-- <img width="1118" height="415" alt="image" src="https://github.com/user-attachments/assets/800f30e5-fd3d-4690-a676-d43c86ded575" />
+<img width="1281" height="440" alt="image" src="https://github.com/user-attachments/assets/08b6d752-007c-41d9-bc49-920a3fab1ee2" />
+
+<img width="1118" height="415" alt="image" src="https://github.com/user-attachments/assets/800f30e5-fd3d-4690-a676-d43c86ded575" />
 
 Все ключевые шаги, а также подсчет количества вариантов в vcf файлах на кждом этапе записываются в pipeline.log. Для каждого образца сохраняется статистика нормализации в normalization_stats.tsv. 
 
