@@ -15,12 +15,15 @@ Repository with script for merge, liftover and annotation with PharmCAT tool
   1) промежуточный отчет *.match.json - содержит список диплотипов, которые были найдены в VCF-файле для каждого фармакогена; <br>
   2) отчет с результатами фенотпирования (прогнозирование фенотипа) *.phenotype.json  - берет диплотипы из .match.json и присваивает им  фенотипы; <br>
   3) итоговый отчет *.report.json - берет фенотипы из .phenotype.json и сопоставляет их с базами данных клинических рекомендаций (CPIC, DPWG), содержит не только диплотипы и фенотипы, но и рекомендации по выбору препарата. <br>
-- парсинг JSON в TSV. В папке с JSON-отчётами (output/pharmcat_json_reports) запускается Python-скрипт json_to_tsv_2.py. Скрипт извлекает из JSON-файлов данные по генам: диплотип, фенотип, функциональный статус, activity score. <br>
-- результаты сохраняются в подпапке output/pharmcat_json_reports/tsv_output в двух форматах: all_genes_combined.tsv — все записи подряд, samples_by_gene_pivot.tsv — сводная таблица в "широком" формате (одна строка на образец, колонки для каждого гена)
+- парсинг JSON в TSV. В папке с JSON-отчётами (output/pharmcat_json_reports) запускается Python-скрипт pharm_script_new.py, которые извлекает данные из файлов *.report.json
+- результаты сохраняются в подпапке output/pharmcat_json_reports/tsv_output: wide_diplotypes_phenotypes.tsv — сводная таблица в "широком" формате (одна строка на образец, колонки для каждого гена с диплотипом, фенотипом, лекарственными препаратами и SNP), drugs_recommendations.tsv - таблица с рекомендациями по приему лекарственных препаратов в зависимости от фенотипа
 
-<img width="1281" height="440" alt="image" src="https://github.com/user-attachments/assets/08b6d752-007c-41d9-bc49-920a3fab1ee2" />
+<img width="745" height="340" alt="image" src="https://github.com/user-attachments/assets/0d173f40-0a75-439b-a1e7-ff2184310892" />
 
-<img width="1118" height="415" alt="image" src="https://github.com/user-attachments/assets/800f30e5-fd3d-4690-a676-d43c86ded575" />
+<br>
+
+<img width="1401" height="479" alt="image" src="https://github.com/user-attachments/assets/d2fcce7d-04be-49fe-bda5-3120d85aa482" />
+
 
 <br>
 <br>
@@ -71,8 +74,9 @@ pip3 install -r requirements.txt
 - общий vcf файл по популяциям (vcf_jews_bgz.vcf.gz)  <br>
 - таблица с вариантыми из стоп-листа, которые нужно исключить (stop_list.tsv) <br>
 - скрипт pharm3.sh   <br>
-- скрипт для обработки JSON-отчетов (json_to_tsv2.py)
-<img width="402" height="477" alt="image" src="https://github.com/user-attachments/assets/87e3c23b-2630-4187-9d03-6e5e0d0f5321" />
+- скрипт для обработки JSON-отчетов (.py)
+<img width="382" height="360" alt="image" src="https://github.com/user-attachments/assets/8aa98124-7640-4467-9530-4ae0efc483aa" />
+
 
 
 
@@ -92,3 +96,5 @@ pip3 install -r requirements.txt
 
 
 **Результат (таблицы all_genes_combined.tsv и samples_by_gene_pivot.tsv) содержится в папке output/pharmcat_json_reports/tsv_output**
+<img width="326" height="113" alt="image" src="https://github.com/user-attachments/assets/b528f11a-8778-4026-a587-5ca2da15ed2f" />
+
