@@ -67,15 +67,16 @@ curl -fsSL https://get.pharmcat.org | bash
 pip3 install -r requirements.txt
 ```
 
-**Запуск скрипта:** bash pharm3.sh  ~/absolute/path (абсолютный путь к папке с vcf файлами, которые нужно обработать) <br>
+**Запуск скрипта:** bash pharm3_new.sh  ~/absolute/path (абсолютный путь к папке с vcf файлами, которые нужно обработать) <br>
  <br>
 **В папке, в которой запускается скрипт,  находятся:** <br>
 - vcf файлы, которые нужно обработать <br>
 - общий vcf файл по популяциям (vcf_jews_bgz.vcf.gz)  <br>
 - таблица с вариантыми из стоп-листа, которые нужно исключить (stop_list.tsv) <br>
-- скрипт pharm3.sh   <br>
+- скрипт pharm3_new.sh   <br>
 - скрипт для обработки JSON-отчетов (.py)
-<img width="382" height="360" alt="image" src="https://github.com/user-attachments/assets/8aa98124-7640-4467-9530-4ae0efc483aa" />
+<img width="680" height="364" alt="image" src="https://github.com/user-attachments/assets/024231e7-a8cf-4eac-931b-2329fda8feab" />
+
 
 
 
