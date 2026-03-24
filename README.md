@@ -79,7 +79,7 @@ pip3 install -r requirements.txt
 **После выполнения скрипта в папке output (будет создана в папке с образцами) будут находиться:** <br>
 - объединенный файл со всеми образцами с индексацией (файл без фильтрации, исходный после объединения) - merged.vcf.gz
 - объединенный файл после исключения вариантов из стоп-листа - merged_excl_stop.vcf.gz
-- нормадизованный merged_excl_stop.vcf.gz - merged_excl_stop_normalized.vcf.gz и его индекс merged_excl_stop.vcf.gz.csi
+- нормализованный merged_excl_stop.vcf.gz - merged_excl_stop_normalized.vcf.gz и его индекс merged_excl_stop.vcf.gz.csi
 - файл после liftover с hg19 до hg 38: lift38_merged_excl_stop_normalized.vcf.gz и его индекс lift38_merged_excl_stop_normalized.vcf.gz.tbi
 - файл с вариантами, которые не удалось конвертировать (были отклонены при liftover) - lift38_rejected.vcf.gz
 - лог файл pipeline.log
