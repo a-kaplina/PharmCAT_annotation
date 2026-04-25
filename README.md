@@ -72,7 +72,7 @@ pip3 install -r requirements.txt
 **В папке, в которой запускается скрипт,  находятся:** <br>
 - vcf файлы, которые нужно обработать <br>
 - общий vcf файл по популяциям (vcf_jews_bgz.vcf.gz)  <br>
-- таблица с вариантыми из стоп-листа, которые нужно исключить (stop_list.tsv) <br>
+- таблица с вариантами из стоп-листа, которые нужно исключить (stop_list.tsv) <br>
 - скрипт pharm3_new.sh   <br>
 - скрипт для обработки JSON-отчетов (.py)
 <img width="680" height="364" alt="image" src="https://github.com/user-attachments/assets/024231e7-a8cf-4eac-931b-2329fda8feab" />
