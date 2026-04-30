@@ -35,7 +35,7 @@ Repository with script for merge, liftover and annotation with PharmCAT tool
 - Java 17 или новее
 - bcftools 1.20
 - htslib >= v1.18
-- Picard
+- CrossMap
 - PharmCAT 3.2.0
 - Python  3.10.14 или новее (библиотеки json, glob, csv, os, sys, collections) <br>
 
