@@ -2,6 +2,8 @@
 
 Repository containing a script for merging, liftover, and annotation using the **PharmCAT** tool.
 
+bash pharm3_new.sh /absolute/path/to/vcf_folder
+
 This script merges individual `vcf.gz` files with a common population VCF file, performs normalization and liftover to **hg38**, identifies variants present in the **PharmCAT** database, annotates pharmacogene haplotypes, and determines phenotypes based on those haplotypes using **PharmCAT (Pharmacogenomics Clinical Annotation Tool)**. Generated files are saved in the `output` directory (created inside the folder containing the input `vcf.gz` files).
 
 The pipeline performs the following steps:
@@ -20,7 +22,11 @@ The pipeline performs the following steps:
 - JSON-to-TSV parsing. In the JSON report directory (`output/pharmcat_json_reports`), the Python script `pharm_script_new.py` extracts data from `*.report.json` files;
 - Results are saved to `output/pharmcat_json_reports/tsv_output`:
   - `wide_diplotypes_phenotypes.tsv` — wide-format summary table (one row per sample) containing diplotypes, phenotypes, associated drugs, and SNPs for each gene;
+    <img width="745" height="340" alt="568543778-0d173f40-0a75-439b-a1e7-ff2184310892" src="https://github.com/user-attachments/assets/1ed43a76-a951-4e1c-aba8-f0cfe46e20d2" />
+
   - `drugs_recommendations.tsv` — table with drug recommendations based on predicted phenotypes.
+  - <img width="1401" height="479" alt="568550924-d2fcce7d-04be-49fe-bda5-3120d85aa482" src="https://github.com/user-attachments/assets/d9bd72e6-d1b5-47f1-9a0c-a407008b2664" />
+
 
 ---
 
@@ -115,6 +121,7 @@ The directory from which the script is executed must contain:
 - Stop-list variants table (`stop_list.tsv`)
 - Pipeline script (`pharm3_new.sh`)
 - Python script for processing PharmCAT JSON reports
+<img width="680" height="364" alt="568561002-024231e7-a8cf-4eac-931b-2329fda8feab" src="https://github.com/user-attachments/assets/f03e9c96-e572-4fc7-ae02-ee5f119c9433" />
 
 ---
 
@@ -131,6 +138,8 @@ After the script finishes, the `output` directory (created inside the sample dir
 - `lift38_merged_excl_stop_normalized.vcf.gz` — liftover result (hg19 → hg38)
 - `lift38_merged_excl_stop_normalized.vcf.gz.tbi` — index file
 - `lift38_rejected.vcf.gz` — variants rejected during liftover
+- <img width="704" height="503" alt="565552430-66fa645d-487f-41bd-bf2a-f65ed847cd8e" src="https://github.com/user-attachments/assets/874798b7-dec6-4ef1-9513-77e98d68bc3e" />
+
 
 ### Logs and Statistics
 
@@ -163,5 +172,7 @@ This directory contains:
 
 - `wide_diplotypes_phenotypes.tsv` — summary table with diplotypes, phenotypes, associated drugs, and SNPs
 - `drugs_recommendations.tsv` — phenotype-based drug recommendation table
+- <img width="326" height="113" alt="568552927-b528f11a-8778-4026-a587-5ca2da15ed2f" src="https://github.com/user-attachments/assets/927d0a92-0d40-4455-82e4-d94d5e3be3c1" />
+
 
 These files represent the final pharmacogenomic interpretation generated from the input VCF datasets.
