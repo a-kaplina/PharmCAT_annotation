@@ -4,7 +4,7 @@ Repository containing a script for merging, liftover, and annotation using the *
 
 bash pharm3_new.sh /absolute/path/to/vcf_folder
 
-This script merges individual `vcf.gz` files with a common population VCF file, performs normalization and liftover to **hg38**, identifies variants present in the **PharmCAT** database, annotates pharmacogene haplotypes, and determines phenotypes based on those haplotypes using **PharmCAT (Pharmacogenomics Clinical Annotation Tool)**. Generated files are saved in the `output` directory (created inside the folder containing the input `vcf.gz` files).
+This script merges individual `vcf.gz` files with a common population VCF file, performs normalization and liftover to **hg38** (script using Picard is pharm3_new.sh; script using CrossMap is pharm3_new_crossm.sh), identifies variants present in the **PharmCAT** database, annotates pharmacogene haplotypes, and determines phenotypes based on those haplotypes using **PharmCAT (Pharmacogenomics Clinical Annotation Tool)**. Generated files are saved in the `output` directory (created inside the folder containing the input `vcf.gz` files).
 
 The pipeline performs the following steps:
 
