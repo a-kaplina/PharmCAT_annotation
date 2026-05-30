@@ -1,6 +1,8 @@
 # PharmCAT_annotation
 Repository with script for merge, liftover and annotation with PharmCAT tool
 
+**Запуск:** bash pharm3_new.sh /absolute/path/to/vcf_folder <br>
+
 Скрипт для объединения vcf.gz файлов с общим vcf.gz файлом с образцами, нормализации и liftover  до hg38, поиска вариантов из базы PharmCAT, аннотации гаплотипов фармакогенов (и опредления фенотипов согласно гаплотипам) при помощи PharmCAT (Pharmacogenomics Clinical Annotation Tool). Полученные файлы сохраняются в папку output (создается внутри папки с vcf.gz файлами) <br>
 <br>
 - скрипт нормализует (данные по нормализации сохраняет в normalization_stats.tsv), индексирует и объединяет отдельные vcf.gz файлы с общим vcf.gz файлом (vcf_jews_bgz.vcf.gz);  <br>
